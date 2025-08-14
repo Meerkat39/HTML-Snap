@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HTML Snap</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                backdrop-filter: blur(10px);
+            }
+
+            .header {
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                color: white;
+                padding: 20px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+
+
+            .main-content {
+                display: flex;
+                height: 70vh;
+            }
+
+            .left-pane {
+                flex: 1;
+                border-right: 2px solid #e0e0e0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .pane-header {
+                background: #f8f9fa;
+                padding: 15px 20px;
+                border-bottom: 1px solid #e0e0e0;
+                font-weight: 600;
+                color: #495057;
+            }
+
+            .html-input {
+                flex: 1;
+                border: none;
+                padding: 20px;
+                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                font-size: 14px;
+                line-height: 1.5;
+                resize: none;
+                outline: none;
+                background: #fafbfc;
+                color: #24292e;
+            }
+
+            .right-pane {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .preview-controls {
+                background: #f8f9fa;
+                padding: 15px 20px;
+                border-bottom: 1px solid #e0e0e0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .copy-btn {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            }
+
+            .copy-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+            }
+
+            .copy-btn:disabled {
+                background: #cccccc;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .preview-frame {
+                flex: 1;
+                border: none;
+                background: white;
+            }
+
+            .status {
+                padding: 10px 20px;
+                background: #e8f5e8;
+                color: #2d5a2d;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+
+            .status.success {
+                background: #d4edda;
+                color: #155724;
+            }
+
+            .status.error {
+                background: #f8d7da;
+                color: #721c24;
+            }
+
+
+
+            @media (max-width: 768px) {
+                .main-content {
+                    flex-direction: column;
+                    height: auto;
+                }
+
+                .left-pane {
+                    border-right: none;
+                    border-bottom: 2px solid #e0e0e0;
+                }
+
+                .html-input {
+                    height: 300px;
+                }
+
+                .preview-frame {
+                    height: 400px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>📸 HTML Snap</h1>
+            </div>
+
+            <div class="main-content">
+                <div class="left-pane">
+                    <div class="pane-header">
+                        📝 HTMLコード入力
+                    </div>
+                    <textarea id="htmlInput" class="html-input"
+                        placeholder="ここにHTMLコードを貼り付けてください...&#10;&#10;例:&#10;&lt;div style=&quot;padding: 20px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); color: white; border-radius: 10px;&quot;&gt;&#10;  &lt;h2&gt;サンプル図表&lt;/h2&gt;&#10;  &lt;p&gt;これはサンプルの説明です。&lt;/p&gt;&#10;&lt;/div&gt;"></textarea>
+
+
+                </div>
+
+                <div class="right-pane">
+                    <div class="preview-controls">
+                        <span>🖼️ プレビュー</span>
+                        <button id="copyBtn" class="copy-btn" onclick="copyAsImage()">
+                            📷 画像としてコピー
+                        </button>
+                    </div>
+                    <iframe id="previewFrame" class="preview-frame" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div id="status" class="status" style="display: none;">
+                Ready to preview HTML
+            </div>
+        </div>
+
+        <script>
+            let currentTheme = 'light';
+
+            // HTML入力の監視
+            document.getElementById('htmlInput').addEventListener('input', debounce(updatePreview, 500));
+
+            // デバウンス関数
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // プレビュー更新
+            function updatePreview() {
+                const htmlContent = document.getElementById('htmlInput').value;
+                const frame = document.getElementById('previewFrame');
+
+                if (!htmlContent.trim()) {
+                    frame.src = 'about:blank';
+                    return;
+                }
+
+                // セキュアなHTMLコンテンツの作成
+                const safeHTML = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { 
+                            margin: 20px; 
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            background: white;
+                            color: #333;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${htmlContent}
+                </body>
+                </html>
+            `;
+
+                const blob = new Blob([safeHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                frame.src = url;
+
+                // メモリリークを防ぐため古いURLを解放
+                frame.onload = () => URL.revokeObjectURL(url);
+            }
+
+            // 画像としてコピー
+            async function copyAsImage() {
+                const button = document.getElementById('copyBtn');
+                const frame = document.getElementById('previewFrame');
+                const status = document.getElementById('status');
+
+                button.disabled = true;
+                button.textContent = '📷 変換中...';
+                status.style.display = 'block';
+                status.className = 'status';
+                status.textContent = '画像を生成中...';
+
+                try {
+                    // iframeの内容をキャプチャ
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // レンダリング完了を待機
+
+                    const canvas = await html2canvas(frame.contentDocument.body, {
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: 'white',
+                        scale: 2, // 高解像度
+                        logging: false
+                    });
+
+                    // CanvasをBlobに変換
+                    canvas.toBlob(async (blob) => {
+                        try {
+                            // クリップボードに画像として書き込み
+                            await navigator.clipboard.write([
+                                new ClipboardItem({
+                                    'image/png': blob
+                                })
+                            ]);
+
+                            status.className = 'status success';
+                            status.textContent = '✅ 画像をクリップボードにコピーしました！Notionなどに直接貼り付けできます。';
+
+                            setTimeout(() => {
+                                status.style.display = 'none';
+                            }, 3000);
+
+                        } catch (clipboardError) {
+                            console.error('Clipboard error:', clipboardError);
+                            // フォールバック: 画像をダウンロード
+                            const link = document.createElement('a');
+                            link.download = 'preview.png';
+                            link.href = canvas.toDataURL();
+                            link.click();
+
+                            status.className = 'status error';
+                            status.textContent = '⚠️ クリップボードコピーに失敗しましたが、画像をダウンロードしました。';
+                        }
+                    }, 'image/png');
+
+                } catch (error) {
+                    console.error('Capture error:', error);
+                    status.className = 'status error';
+                    status.textContent = '❌ 画像の生成に失敗しました。HTMLコードを確認してください。';
+                } finally {
+                    button.disabled = false;
+                    button.textContent = '📷 画像としてコピー';
+                }
+            }
+
+
+
+
+
+            // 初期化
+            document.addEventListener('DOMContentLoaded', () => {
+                // ブラウザの互換性チェック
+                if (!navigator.clipboard || !window.ClipboardItem) {
+                    console.warn('Clipboard API not supported');
+                    document.getElementById('copyBtn').textContent = '📷 ダウンロード';
+                }
+            });
+        </script>
+    </body>
+
+</html>
