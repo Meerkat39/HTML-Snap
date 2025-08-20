@@ -4,6 +4,7 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
-  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  setupFilesAfterEnv: ["@testing-library/jest-dom"],
 };
