@@ -6,7 +6,10 @@ type RenderAreaProps = {
 const RenderArea = ({ html }: RenderAreaProps) => {
   // TODO: htmlをサニタイズしてdangerouslySetInnerHTMLで表示
   return (
-    <div className="w-full h-full">RenderArea（プレビュー: 実装予定）</div>
+    <>
+      <div className="w-full h-full">RenderArea（プレビュー: 実装予定）</div>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+    </>
   );
 };
 

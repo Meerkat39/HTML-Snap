@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npx jest"
+    "test": "npx jest",
+    "type-check": "tsc --noEmit",
+    "verify": "npm run lint && npm run type-check && npm test && npm run build"
   },
   "dependencies": {
     "next": "15.4.6",
@@ -17,6 +19,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.7.0",
@@ -32,7 +35,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.5",
     "tailwindcss": "^4",
-    "ts-jest": "^29.4.1",
+    "ts-jest": "^29.0.5",
     "typescript": "^5"
   }
 }
