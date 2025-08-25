@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "ci:test": "docker build -t html-snap-ci . && docker image prune -f && docker run --rm html-snap-ci",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
