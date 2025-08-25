@@ -1,9 +1,9 @@
 // メインページ初期化：主要コンポーネントの配置（中身は未実装）
 "use client";
 import React, { useState } from "react";
-import Header from "../components/Header";
-import InputPane from "../components/InputPane";
-import PreviewPane from "../components/PreviewPane";
+import Header from "../components/common/Header";
+import InputPane from "../components/input/InputPane";
+import PreviewPane from "../components/preview/PreviewPane";
 
 export default function Home() {
   // 入力値の状態管理（親で一元管理）

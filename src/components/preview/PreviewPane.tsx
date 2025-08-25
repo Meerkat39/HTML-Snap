@@ -1,6 +1,6 @@
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
-import ActionButtons from "./ActionButtons";
-import RenderArea from "./RenderArea";
+import ActionButtons from "../common/ActionButtons";
+import RenderArea from "../render/RenderArea";
 
 type PreviewPaneProps = {
   html: string;
