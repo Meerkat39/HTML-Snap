@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo, useRef } from "react";
 import { sanitizeHtml, validateHtml } from "../../utils/html";
-import ClearButton from "../common/ClearButton";
+import ClearButton from "./ClearButton";
 import InputErrorMessage from "./InputErrorMessage";
 
 // HTMLコード入力欄のprops定義

@@ -1,7 +1,6 @@
 // 入力欄のクリアボタン専用コンポーネント
 // visible: 表示するかどうか
 // onClick: クリア処理
-// textareaRef: フォーカス制御用
 
 interface ClearButtonProps {
   visible: boolean;
