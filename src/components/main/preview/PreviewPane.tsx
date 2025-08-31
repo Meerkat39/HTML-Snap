@@ -1,7 +1,7 @@
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
 import html2canvas from "html2canvas-pro";
 import { useRef, useState } from "react";
-import RenderArea from "../render/RenderArea";
+import RenderArea from "../../render/RenderArea";
 import ActionButtons from "./ActionButtons";
 
 type PreviewPaneProps = {
@@ -64,7 +64,13 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       )}
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <span>🖼️ プレビュー</span>
-        <div>
+        <div className="flex gap-2 items-center">
+          {/* ズーム操作ボタン群（UIのみ、状態管理は次ステップ） */}
+          <button className="px-2 py-1 border rounded bg-white" title="ズームアウト">−</button>
+          <span className="px-2">100%</span>
+          <button className="px-2 py-1 border rounded bg-white" title="ズームイン">＋</button>
+          <button className="px-2 py-1 border rounded bg-white" title="リセット">⟳</button>
+          {/* 既存の画像コピーボタン */}
           <ActionButtons onImageCopy={handleImageCopy} />
         </div>
       </div>

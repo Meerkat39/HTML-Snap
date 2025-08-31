@@ -2,12 +2,23 @@
 "use client";
 import React, { useState } from "react";
 import Header from "../components/common/Header";
-import InputPane from "../components/input/InputPane";
-import PreviewPane from "../components/preview/PreviewPane";
+import MainPane from "../components/main/MainPane";
 
 export default function Home() {
   // 入力値の状態管理（親で一元管理）
-  const [inputValue, setInputValue] = useState("");
+  // デバッグ用：初期値にサンプルHTMLを設定
+  const [inputValue, setInputValue] = useState(`
+    <div style="padding:16px; background:#f9f9f9; border-radius:8px;">
+      <h1>HTML Snap デバッグサンプル</h1>
+      <p>これはテスト用の初期HTMLです。<br>複数行・タグ・スタイルを含みます。</p>
+      <ul>
+        <li>リスト1</li>
+        <li>リスト2</li>
+        <li>リスト3</li>
+      </ul>
+      <img src="https://placehold.jp/150x80.png" alt="ダミー画像" />
+    </div>
+  `);
 
   // 入力イベントハンドラ
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -25,14 +36,13 @@ export default function Home() {
       <div className="container max-w-5xl w-full bg-white rounded-xl shadow-md overflow-hidden">
         {/* ヘッダー */}
         <Header />
-        {/* メイン2ペイン */}
-        <main className="flex flex-col md:flex-row h-[70vh]">
-          <InputPane
-            value={inputValue}
-            onChange={handleInputChange}
+        {/* 表示モード切替＋ペイン分岐 */}
+        <main className="h-[70vh]">
+          <MainPane
+            inputValue={inputValue}
+            onInputChange={handleInputChange}
             onPasteSanitized={handlePasteSanitized}
           />
-          <PreviewPane html={inputValue} />
         </main>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo, useRef } from "react";
-import { sanitizeHtml, validateHtml } from "../../utils/html";
+import { sanitizeHtml, validateHtml } from "../../../utils/html";
 import ClearButton from "./ClearButton";
 import InputErrorMessage from "./InputErrorMessage";
 

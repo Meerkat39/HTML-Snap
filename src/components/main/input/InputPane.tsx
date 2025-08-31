@@ -2,10 +2,16 @@
 import InputArea from "./InputArea";
 
 // props: 入力値・onChange・ペースト時サニタイズ用コールバック
+/**
+ * InputPane: 入力欄ペイン
+ * @param value 入力値
+ * @param onChange 入力イベント
+ * @param onPasteSanitized サニタイズ済みHTMLペースト時コールバック
+ */
 type InputPaneProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onPasteSanitized?: (sanitized: string) => void; // 追加
+  onPasteSanitized?: (sanitized: string) => void;
 };
 
 const InputPane = ({ value, onChange, onPasteSanitized }: InputPaneProps) => {
