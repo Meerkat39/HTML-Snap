@@ -3,6 +3,7 @@ import html2canvas from "html2canvas-pro";
 import { useRef, useState } from "react";
 import RenderArea from "../../render/RenderArea";
 import ActionButtons from "./ActionButtons";
+import ZoomControls from "./ZoomControls";
 
 type PreviewPaneProps = {
   html: string;
@@ -14,6 +15,9 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
   // 通知表示用state
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
+
+  // ズーム倍率の状態管理（ZoomControlsから受け取る）
+  const [zoom, setZoom] = useState(1.0);
 
   // 画像生成処理（ActionButtonsに渡す）
   const handleImageCopy = async () => {
@@ -65,19 +69,27 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <span>🖼️ プレビュー</span>
         <div className="flex gap-2 items-center">
-          {/* ズーム操作ボタン群（UIのみ、状態管理は次ステップ） */}
-          <button className="px-2 py-1 border rounded bg-white" title="ズームアウト">−</button>
-          <span className="px-2">100%</span>
-          <button className="px-2 py-1 border rounded bg-white" title="ズームイン">＋</button>
-          <button className="px-2 py-1 border rounded bg-white" title="リセット">⟳</button>
+          {/* ズーム操作UIをコンポーネント化 */}
+          <ZoomControls onZoomChange={setZoom} />
           {/* 既存の画像コピーボタン */}
           <ActionButtons onImageCopy={handleImageCopy} />
         </div>
       </div>
-      <div className="flex-1 p-6 flex items-center justify-center bg-white">
-        {/* 画像化したい領域にrefを付与 */}
-        <div ref={previewRef} className="w-full h-full">
-          <RenderArea html={html} />
+      {/* プレビュー表示領域（拡大時はスクロールで制御） */}
+      <div className="flex-1 w-full min-w-0 p-6 bg-white overflow-x-auto overflow-y-auto max-w-[600px] max-h-[400px]">
+        {/* 横スクロール用ラッパーdiv（white-space: nowrapで拡大時も横に伸びる） */}
+        <div className="w-full" style={{ whiteSpace: "nowrap" }}>
+          {/* 画像化したい領域にrefを付与＋ズーム反映＋inline-blockではみ出し防止 */}
+          <div
+            ref={previewRef}
+            className="min-w-[200px] min-h-[150px] inline-block"
+            style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: "top left",
+            }}
+          >
+            <RenderArea html={html} />
+          </div>
         </div>
       </div>
     </section>

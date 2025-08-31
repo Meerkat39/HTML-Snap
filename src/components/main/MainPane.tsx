@@ -60,12 +60,18 @@ const MainPane: React.FC<MainPaneProps> = ({
         {mode === "preview" && <PreviewPane html={inputValue} />}
         {mode === "both" && (
           <>
-            <InputPane
-              value={inputValue}
-              onChange={onInputChange}
-              onPasteSanitized={onPasteSanitized}
-            />
-            <PreviewPane html={inputValue} />
+            {/* 入力ペイン: 横並び比率1:1のためflex-1/min-w-0でラップ */}
+            <div className="flex-1 min-w-0">
+              <InputPane
+                value={inputValue}
+                onChange={onInputChange}
+                onPasteSanitized={onPasteSanitized}
+              />
+            </div>
+            {/* プレビューペイン: 横並び比率1:1のためflex-1/min-w-0でラップ */}
+            <div className="flex-1 min-w-0">
+              <PreviewPane html={inputValue} />
+            </div>
           </>
         )}
       </div>
