@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef } from "react";
+import React, { useRef } from "react";
 import { sanitizeHtml, validateHtml } from "../../../utils/html";
 import ClearButton from "./ClearButton";
 import InputErrorMessage from "./InputErrorMessage";
@@ -27,9 +27,17 @@ const InputArea = ({ value, onChange, onPasteSanitized }: InputAreaProps) => {
     textareaRef.current?.focus();
   };
 
-  // サニタイズ・バリデーション判定（useMemoで最適化）
-  const { hasDanger } = useMemo(() => sanitizeHtml(value), [value]);
-  const isValid = useMemo(() => validateHtml(value), [value]);
+  // サニタイズ・バリデーション結果をuseStateで管理
+  const [hasDanger, setHasDanger] = React.useState(false);
+  const [isValid, setIsValid] = React.useState(true);
+
+  // value変更時にクライアント側のみ判定
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasDanger(sanitizeHtml(value).hasDanger);
+      setIsValid(validateHtml(value));
+    }
+  }, [value]);
 
   // ペースト時サニタイズ（危険タグ除去時のみ親に通知）
   const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {

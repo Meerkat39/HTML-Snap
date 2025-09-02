@@ -1,16 +1,15 @@
 // HTML関連ユーティリティ関数群
-import DOMPurify from "isomorphic-dompurify";
+// import DOMPurify from "isomorphic-dompurify";
 // sanitizeHtml: 危険タグ除去
 // validateHtml: HTML構文チェック
 
 export const sanitizeHtml = (
   html: string
 ): { sanitized: string; hasDanger: boolean } => {
-  // DOMPurifyでサニタイズ
-  const sanitized = DOMPurify.sanitize(html);
-  console.log("Sanitized:", sanitized);
-  // 危険タグが含まれていたかどうか（サニタイズ前後で差分があればtrue）
-  const hasDanger = sanitized !== html;
+  // scriptタグのみ除去、styleタグ・属性はそのまま残す
+  const scriptTagRegex = /<\s*script\b[^>]*>([\s\S]*?)<\s*\/\s*script>/gi;
+  const hasDanger = scriptTagRegex.test(html);
+  const sanitized = html.replace(scriptTagRegex, "");
   return { sanitized, hasDanger };
 };
 
