@@ -1,7 +1,6 @@
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
 import html2canvas from "html2canvas-pro";
 import { useRef, useState } from "react";
-import RenderArea from "../../render/RenderArea";
 import ActionButtons from "./ActionButtons";
 import ZoomControls from "./ZoomControls";
 
@@ -52,8 +51,12 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
     }, "image/png");
   };
 
+  // ズーム用styleタグをsrcDocに埋め込む（枠サイズはそのまま、中身だけ拡大・縮小）
+  const zoomStyle = `<style>body { transform: scale(${zoom}); transform-origin: top left; }</style>`;
+  const iframeHtml = zoomStyle + html;
+
   return (
-    <section className="flex-1 flex flex-col relative">
+    <section className="flex-1 flex flex-col relative h-full">
       {/* コピー完了通知 */}
       {copied && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow z-50">
@@ -69,28 +72,32 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <span>🖼️ プレビュー</span>
         <div className="flex gap-2 items-center">
-          {/* ズーム操作UIをコンポーネント化 */}
           <ZoomControls onZoomChange={setZoom} />
-          {/* 既存の画像コピーボタン */}
           <ActionButtons onImageCopy={handleImageCopy} />
         </div>
       </div>
-      {/* プレビュー表示領域（拡大時はスクロールで制御） */}
-      <div className="flex-1 w-full min-w-0 p-6 bg-white overflow-x-auto overflow-y-auto max-w-[600px] max-h-[400px]">
-        {/* 横スクロール用ラッパーdiv（white-space: nowrapで拡大時も横に伸びる） */}
-        <div className="w-full" style={{ whiteSpace: "nowrap" }}>
-          {/* 画像化したい領域にrefを付与＋ズーム反映＋inline-blockではみ出し防止 */}
-          <div
-            ref={previewRef}
-            className="min-w-[200px] min-h-[150px] inline-block"
-            style={{
-              transform: `scale(${zoom})`,
-              transformOrigin: "top left",
-            }}
-          >
-            <RenderArea html={html} />
-          </div>
-        </div>
+      {/* プレビュー表示領域（iframeで分離表示） */}
+      <div
+        className="flex-1 w-full h-full min-w-0 min-h-0 p-6 bg-white overflow-hidden flex items-stretch justify-stretch"
+        style={{ maxWidth: "600px", maxHeight: "400px", height: "100%" }}
+      >
+        <iframe
+          title="HTMLプレビュー"
+          sandbox="allow-scripts allow-same-origin"
+          srcDoc={iframeHtml}
+          style={{
+            width: "100%",
+            height: "100%",
+            minHeight: "0",
+            minWidth: "0",
+            border: "none",
+            display: "block",
+            boxSizing: "border-box",
+            background: "white",
+            maxWidth: "100%",
+            maxHeight: "100%",
+          }}
+        />
       </div>
     </section>
   );
