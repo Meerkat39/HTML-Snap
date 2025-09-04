@@ -5,5 +5,8 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
-  setupFilesAfterEnv: ["@testing-library/jest-dom"],
+   setupFilesAfterEnv: [
+     "@testing-library/jest-dom",
+     "<rootDir>/jest.setup.js",
+   ],
 };

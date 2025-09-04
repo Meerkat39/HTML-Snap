@@ -1,5 +1,4 @@
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
-import html2canvas from "html2canvas-pro";
 import { useEffect, useRef, useState } from "react";
 import ActionButtons from "./ActionButtons";
 import PreviewIframeArea from "./PreviewIframeArea";
@@ -11,8 +10,6 @@ type PreviewPaneProps = {
 };
 
 const PreviewPane = ({ html }: PreviewPaneProps) => {
-  // 画像コピー用 hidden div の参照
-  const hiddenPreviewRef = useRef<HTMLDivElement>(null);
   // プレビュー枠の横幅（px）
   const [previewWidth, setPreviewWidth] = useState(600);
   // プレビューペインの最大幅
@@ -46,36 +43,27 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
 
   // 画像生成処理（ActionButtonsに渡す）
   const handleImageCopy = async () => {
-    const target = hiddenPreviewRef.current; // hidden divのrefを参照
-    if (!target) {
-      setError("画像化対象のhiddenPreviewRefがnullです");
-      return;
-    }
+    // サーバーサイドAPIで画像化
     try {
-      const canvas = await html2canvas(target, {
-        backgroundColor: "#fff", // 背景を白に固定
-        scale: window.devicePixelRatio,
+      const res = await fetch("/api/html2image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ html, width: previewWidth, height: 400 }),
       });
-      canvas.toBlob(async (blob: Blob | null) => {
-        if (!blob) {
-          setError("画像データの生成に失敗しました");
-          setTimeout(() => setError(""), 3000);
-          return;
-        }
-        try {
-          await navigator.clipboard.write([
-            new window.ClipboardItem({ "image/png": blob }),
-          ]);
-          setCopied(true); // 通知表示
-          setTimeout(() => setCopied(false), 2000); // 2秒後に非表示
-        } catch {
-          setError("クリップボードへのコピーに失敗しました");
-          setTimeout(() => setError(""), 3000);
-        }
-      }, "image/png");
+      if (!res.ok) {
+        setError("画像化APIでエラーが発生しました");
+        setTimeout(() => setError(""), 3000);
+        return;
+      }
+      const blob = await res.blob();
+      await navigator.clipboard.write([
+        new window.ClipboardItem({ "image/png": blob }),
+      ]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       setError("画像化処理でエラーが発生しました");
-      return;
+      setTimeout(() => setError(""), 3000);
     }
 
     // （重複していたcanvas.toBlob呼び出しを削除）
@@ -116,20 +104,6 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
         iframeHtml={iframeHtml}
         width={previewWidth}
         height={400}
-      />
-      {/* hidden div（画像化用）をsection内に必ず描画。画像コピー時はこのdivをhtml2canvas対象にする。 */}
-      <div
-        ref={hiddenPreviewRef}
-        style={{
-          position: "absolute", // 画面外に配置
-          left: "-9999px",
-          top: 0,
-          width: previewWidth,
-          zoom: zoom,
-          background: "#fff",
-          pointerEvents: "none",
-        }}
-        dangerouslySetInnerHTML={{ __html: html }}
       />
     </section>
   );
