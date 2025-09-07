@@ -1,3 +1,4 @@
+import RegionCopyIcon from "../../icons/RegionCopyIcon";
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
 import { useEffect, useRef, useState } from "react";
 import ActionButtons from "./ActionButtons";
@@ -256,7 +257,7 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       )}
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <span>🖼️ プレビュー</span>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap">
           <SliderWidthControl
             width={previewWidth}
             max={paneMaxWidth}
@@ -266,12 +267,13 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
           <ActionButtons onImageCopy={handleImageCopy} />
           <button
             type="button"
-            className="px-3 py-1 rounded bg-orange-500 text-white hover:bg-orange-600 disabled:bg-gray-300"
+            className="flex items-center justify-center px-2 py-1 rounded bg-orange-500 text-white hover:bg-orange-600 disabled:bg-gray-300 min-w-[36px]"
             onClick={handleRegionImageCopy}
             disabled={!selectedRegion}
             aria-label="選択領域のみ画像コピー"
+            title="選択領域のみ画像コピー"
           >
-            選択領域のみ画像コピー
+            <RegionCopyIcon />
           </button>
         </div>
       </div>
