@@ -6,16 +6,23 @@
 
 ## TODO
 
-### プレビュー領域の iframe sandbox 化（安全な分離表示）
+## 指定領域のみ保存 実装 TODO
 
-#### 実装タスク洗い出し（iframe sandbox プレビュー）
+- [ ] 領域指定 UI（要素選択・ID/クラス指定など）の設計
+- [ ] 領域選択時のハイライト表示
+- [ ] 指定領域の画像化処理（API/Canvas 等）
+- [ ] 保存・ダウンロード機能の追加
+- [ ] 領域指定保存のテストコード追加
 
-    - [ ] PreviewPaneをiframe化し、sandbox属性を付与
-    - [ ] 入力HTMLをiframeのsrcDocで描画
-    - [ ] sandbox属性値を明示（例: "allow-scripts allow-same-origin"）
-    - [ ] PreviewPaneの既存dangerouslySetInnerHTML描画をiframe方式に置換
-    - [ ] styleタグ・属性の反映確認（iframe内でのみ有効化）
-    - [ ] 画像コピー機能：iframe外にhiddenなdivを用意し、同じHTMLを描画して画像化
-    - [ ] ズーム・スクロールUIのiframe対応（iframeのwidth/height/scale調整）
-    - [ ] サニタイズ仕様：scriptタグ除去のみ維持、styleは許可
-    - [ ] テストコード：iframeプレビューの表示・安全性・UI崩れ防止
+## トリミング機能 実装 TODO
+
+- [ ] プレビュー領域にトリミング枠（矩形）を重ねて描画する
+- [ ] トリミング枠の初期サイズ・位置を決める（中央・デフォルトサイズ）
+- [ ] トリミング枠のドラッグ移動を実装
+- [ ] トリミング枠のリサイズ（四隅・辺のドラッグ）を実装
+- [ ] トリミング範囲の状態（x, y, width, height）を管理
+- [ ] トリミング枠の外側を半透明でマスク表示
+- [ ] トリミング範囲を画像化する処理を追加（API/Canvas 等）
+- [ ] トリミング後の画像プレビュー UI を追加
+- [ ] トリミング確定・キャンセルボタンの UI/ロジック
+- [ ] トリミング機能の単体テスト・E2E テスト追加

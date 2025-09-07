@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="container max-w-5xl w-full bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="max-w-[1360px] w-full bg-white rounded-xl shadow-md overflow-hidden mx-auto">
         {/* ヘッダー */}
         <Header />
         {/* 表示モード切替＋ペイン分岐 */}
