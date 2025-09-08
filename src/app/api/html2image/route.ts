@@ -3,9 +3,24 @@ import { NextRequest } from "next/server";
 import puppeteer from "puppeteer";
 
 export async function POST(req: NextRequest) {
-  const { html, width = 800, height = 600 } = await req.json();
+  let html, width, height;
   let browser;
   try {
+    // JSONパースエラーをcatch
+    try {
+      const body = await req.json();
+      html = body.html;
+      width = body.width ?? 800;
+      height = body.height ?? 600;
+    } catch (jsonErr) {
+      return new Response(
+        JSON.stringify({
+          error: "リクエストボディが不正です (JSONパース失敗)",
+          detail: String(jsonErr),
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
     browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -22,7 +37,7 @@ export async function POST(req: NextRequest) {
     if (browser) await browser.close();
     return new Response(
       JSON.stringify({ error: "画像化処理でエラー", detail: String(err) }),
-      { status: 500 }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }

@@ -4,9 +4,7 @@ module.exports = {
     "^.+\\.(t|j)sx?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
-   setupFilesAfterEnv: [
-     "@testing-library/jest-dom",
-     "<rootDir>/jest.setup.js",
-   ],
+  // e2eディレクトリはJestの対象外（Playwright専用）
+  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/e2e/"],
+  setupFilesAfterEnv: ["@testing-library/jest-dom", "<rootDir>/jest.setup.js"],
 };

@@ -199,6 +199,7 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       });
       if (!res.ok) {
         setError("画像化APIでエラーが発生しました");
+        setCopied(false); // エラー時は明示的にfalse
         setTimeout(() => setError(""), 3000);
         return;
       }
@@ -206,11 +207,16 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
       await navigator.clipboard.write([
         new window.ClipboardItem({ "image/png": blob }),
       ]);
+      // デバッグ用: 通知発火タイミングを出力
+      console.log("setCopied(true) called (全体コピー)");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch {
+    } catch (e) {
       setError("画像化処理でエラーが発生しました");
+      setCopied(false); // エラー時は明示的にfalse
       setTimeout(() => setError(""), 3000);
+      // デバッグ用: エラー内容も出力
+      console.error("handleImageCopy error", e);
     }
   };
 

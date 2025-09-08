@@ -6,19 +6,8 @@ import MainPane from "../components/main/MainPane";
 
 export default function Home() {
   // 入力値の状態管理（親で一元管理）
-  // デバッグ用：初期値にサンプルHTMLを設定
-  const [inputValue, setInputValue] = useState(`
-    <div style="padding:16px; background:#f9f9f9; border-radius:8px;">
-      <h1>HTML Snap デバッグサンプル</h1>
-      <p>これはテスト用の初期HTMLです。<br>複数行・タグ・スタイルを含みます。</p>
-      <ul>
-        <li>リスト1</li>
-        <li>リスト2</li>
-        <li>リスト3</li>
-      </ul>
-      <img src="https://placehold.jp/150x80.png" alt="ダミー画像" />
-    </div>
-  `);
+  // 初期値は空文字列
+  const [inputValue, setInputValue] = useState("");
 
   // 入力イベントハンドラ
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
