@@ -60,12 +60,7 @@ const InputArea = ({ value, onChange, onPasteSanitized }: InputAreaProps) => {
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       {/* ラベル・説明・エラー */}
-      <label htmlFor="htmlInput" className="font-semibold text-gray-700">
-        HTMLコード
-      </label>
-      <span className="text-sm text-gray-500 mb-1">
-        貼り付け・入力で即時プレビューされます
-      </span>
+      {/* ラベル・説明文はInputPane側で表示するため削除 */}
       <InputErrorMessage errorMsg={errorMsg} />
 
       {/* 入力欄＋クリアボタン */}

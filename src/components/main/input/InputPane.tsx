@@ -16,9 +16,12 @@ type InputPaneProps = {
 
 const InputPane = ({ value, onChange, onPasteSanitized }: InputPaneProps) => {
   return (
-    <section className="flex-1 border-b-2 md:border-b-0 md:border-r-2 border-gray-200 flex flex-col">
-      <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
-        📝 HTMLコード入力
+    <section className="flex-1 border-none flex flex-col">
+      <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700 min-h-[120px] flex flex-col justify-center">
+        <span>📝 HTMLコード入力</span>
+        <span className="text-xs text-gray-500 mt-1">
+          貼り付け・入力で即時プレビューされます
+        </span>
       </div>
       <div className="flex-1 p-6">
         {/* InputAreaにonPasteSanitizedを渡す */}

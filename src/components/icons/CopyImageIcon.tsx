@@ -1,10 +1,18 @@
 // 画像コピー用アイコン（ファイルアイコンを流用）
 import React from "react";
 
-const CopyImageIcon: React.FC = () => (
+interface CopyImageIconProps {
+  width?: number;
+  height?: number;
+}
+
+const CopyImageIcon: React.FC<CopyImageIconProps> = ({
+  width = 20,
+  height = 20,
+}) => (
   <svg
-    width="20"
-    height="20"
+    width={width}
+    height={height}
     viewBox="0 0 16 16"
     fill="none"
     aria-hidden="true"

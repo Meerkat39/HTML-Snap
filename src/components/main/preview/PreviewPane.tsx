@@ -261,26 +261,41 @@ const PreviewPane = ({ html }: PreviewPaneProps) => {
           {error}
         </div>
       )}
-      <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-        <span>🖼️ プレビュー</span>
-        <div className="flex gap-2 items-center flex-wrap">
-          <SliderWidthControl
-            width={previewWidth}
-            max={paneMaxWidth}
-            onChange={setPreviewWidth}
-          />
-          <ZoomControls onZoomChange={setZoom} />
-          <ActionButtons onImageCopy={handleImageCopy} />
-          <button
-            type="button"
-            className="flex items-center justify-center px-2 py-1 rounded bg-orange-500 text-white hover:bg-orange-600 disabled:bg-gray-300 min-w-[36px]"
-            onClick={handleRegionImageCopy}
-            disabled={!selectedRegion}
-            aria-label="選択領域のみ画像コピー"
-            title="選択領域のみ画像コピー"
-          >
-            <RegionCopyIcon />
-          </button>
+      <div className="bg-gray-50 px-2 sm:px-6 py-4 border-b border-gray-200 min-w-0 min-h-[120px] flex items-center">
+        {/* 2カラム2行グリッド: 左=スライダー/ズーム, 右=アイコン群 */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-2 items-center w-full">
+          {/* 1列目・1行目: スライダー */}
+          <div className="col-start-1 row-start-1 flex justify-center items-center w-full">
+            <SliderWidthControl
+              width={previewWidth}
+              max={paneMaxWidth}
+              onChange={setPreviewWidth}
+            />
+          </div>
+          {/* 1列目・2行目: zoom */}
+          <div className="col-start-1 row-start-2 flex justify-center items-center w-full">
+            <ZoomControls onZoomChange={setZoom} />
+          </div>
+          {/* 2列目: アイコン群（2行中央・縦並び） */}
+          <div className="col-start-2 row-span-2 flex flex-col justify-center items-center h-full">
+            <div className="flex flex-row justify-center items-center h-full gap-4">
+              <ActionButtons
+                onImageCopy={handleImageCopy}
+                buttonClassName="!px-3 !py-2 !text-lg !min-w-[40px]"
+                iconSize={28}
+              />
+              <button
+                type="button"
+                className="flex items-center justify-center px-3 py-2 rounded bg-orange-500 text-white hover:bg-orange-600 disabled:bg-gray-300 min-w-[40px] text-lg"
+                onClick={handleRegionImageCopy}
+                disabled={!selectedRegion}
+                aria-label="選択領域のみ画像コピー"
+                title="選択領域のみ画像コピー"
+              >
+                <RegionCopyIcon width={28} height={28} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       {/* プレビュー表示領域（iframeで分離表示） */}

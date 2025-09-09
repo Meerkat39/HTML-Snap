@@ -68,6 +68,8 @@ const MainPane: React.FC<MainPaneProps> = ({
                 onPasteSanitized={onPasteSanitized}
               />
             </div>
+            {/* 区切り線: 両ペインの間に縦線を表示 */}
+            <div className="w-px bg-gray-300 mx-2 self-stretch" />
             {/* プレビューペイン: 横並び比率1:1のためflex-1/min-w-0でラップ */}
             <div className="flex-1 min-w-0">
               <PreviewPane html={inputValue} />
