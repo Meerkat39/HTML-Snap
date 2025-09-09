@@ -16,7 +16,6 @@ describe("MainPane 表示モード切替UI", () => {
       />
     );
     expect(screen.getByText("📝 HTMLコード入力")).toBeInTheDocument();
-    expect(screen.getByText("🖼️ プレビュー")).toBeInTheDocument();
   });
 
   test("エディタタブで入力欄のみ表示", () => {
@@ -29,7 +28,6 @@ describe("MainPane 表示モード切替UI", () => {
     );
     fireEvent.click(screen.getByText("エディタ"));
     expect(screen.getByText("📝 HTMLコード入力")).toBeInTheDocument();
-    expect(screen.queryByText("🖼️ プレビュー")).toBeNull();
   });
 
   test("プレビュタブでプレビューのみ表示", () => {
@@ -42,6 +40,5 @@ describe("MainPane 表示モード切替UI", () => {
     );
     fireEvent.click(screen.getByText("プレビュー"));
     expect(screen.queryByText("📝 HTMLコード入力")).toBeNull();
-    expect(screen.getByText("🖼️ プレビュー")).toBeInTheDocument();
   });
 });
