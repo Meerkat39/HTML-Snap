@@ -1,7 +1,7 @@
 // 表示モード切替UIの骨組み（タブ＋状態管理）
 import { useState } from "react";
-import InputPane from "./input/InputPane";
-import PreviewPane from "./preview/PreviewPane";
+import InputPane from "../../input/components/InputPane";
+import PreviewPane from "../../preview/components/PreviewPane";
 
 type ViewMode = "editor" | "both" | "preview";
 

@@ -1,8 +1,8 @@
 // メインページ初期化：主要コンポーネントの配置（中身は未実装）
 "use client";
 import React, { useState } from "react";
-import Header from "../components/common/Header";
-import MainPane from "../components/main/MainPane";
+import Header from "../features/snap/layout/components/Header";
+import MainPane from "../features/snap/layout/components/MainPane";
 
 export default function Home() {
   // 入力値の状態管理（親で一元管理）

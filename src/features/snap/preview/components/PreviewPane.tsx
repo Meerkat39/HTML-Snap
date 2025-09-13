@@ -1,4 +1,4 @@
-import RegionCopyIcon from "../../icons/RegionCopyIcon";
+import RegionCopyIcon from "./RegionCopyIcon";
 // プレビューペイン（RenderArea＋ActionButtonsをラップ）
 import { useEffect, useRef, useState } from "react";
 import ActionButtons from "./ActionButtons";

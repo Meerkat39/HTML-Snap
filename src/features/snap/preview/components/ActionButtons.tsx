@@ -1,5 +1,5 @@
 // 操作ボタン群コンポーネント（画像コピーボタン含む）
-import CopyImageIcon from "../../icons/CopyImageIcon";
+import CopyImageIcon from "./CopyImageIcon";
 
 interface ActionButtonsProps {
   onImageCopy: () => void;

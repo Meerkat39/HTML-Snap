@@ -1,6 +1,6 @@
 // MainPaneの表示モード切替テスト
 import { fireEvent, render, screen } from "@testing-library/react";
-import MainPane from "./MainPane";
+import MainPane from "../components/main/MainPane";
 
 describe("MainPane 表示モード切替UI", () => {
   const inputValue = "<h1>テストHTML</h1>";
