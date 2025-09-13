@@ -1,6 +1,6 @@
 // InputPaneコンポーネントの単体テスト
 import { render, screen } from "@testing-library/react";
-import InputPane from "./InputPane";
+import InputPane from "../components/InputPane";
 
 describe("InputPane", () => {
   it("InputPaneがレンダリングされる", () => {

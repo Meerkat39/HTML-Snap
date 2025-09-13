@@ -1,6 +1,6 @@
 // PreviewIframeAreaコンポーネントの単体テスト
 import { render, screen } from "@testing-library/react";
-import PreviewIframeArea from "./PreviewIframeArea";
+import PreviewIframeArea from "../components/PreviewIframeArea";
 
 describe("PreviewIframeArea", () => {
   it("iframeが正しく表示され、srcDocにHTMLが渡る", () => {

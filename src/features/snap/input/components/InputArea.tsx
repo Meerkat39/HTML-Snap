@@ -1,66 +1,36 @@
 "use client";
-import React, { useRef } from "react";
-import { sanitizeHtml, validateHtml } from "../../../../utils/html";
+import React from "react";
+import { useInputAreaState } from "../hooks/useInputAreaState";
 import ClearButton from "./ClearButton";
 import InputErrorMessage from "./InputErrorMessage";
 
-// HTMLコード入力欄のprops定義
-// value: 入力値
-// onChange: 入力値変更時のハンドラ
-// onPasteSanitized: ペースト時サニタイズ用コールバック（任意）
+/**
+ * HTMLコード入力欄コンポーネント
+ * @param value 入力値
+ * @param onChange 入力値変更時のハンドラ
+ * @param onPasteSanitized ペースト時サニタイズ用コールバック（任意）
+ */
 type InputAreaProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onPasteSanitized?: (sanitized: string) => void;
 };
 
-const InputArea = ({ value, onChange, onPasteSanitized }: InputAreaProps) => {
-  // 入力欄のDOM参照（クリア・フォーカス用）
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // 入力値クリア＆フォーカス復帰
-  const handleClear = () => {
-    const event = {
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLTextAreaElement>;
-    onChange(event);
-    textareaRef.current?.focus();
-  };
-
-  // サニタイズ・バリデーション結果をuseStateで管理
-  const [hasDanger, setHasDanger] = React.useState(false);
-  const [isValid, setIsValid] = React.useState(true);
-
-  // value変更時にクライアント側のみ判定
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHasDanger(sanitizeHtml(value).hasDanger);
-      setIsValid(validateHtml(value));
-    }
-  }, [value]);
-
-  // ペースト時サニタイズ（危険タグ除去時のみ親に通知）
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const pasted = e.clipboardData.getData("text");
-    const { sanitized } = sanitizeHtml(pasted);
-    if (sanitized !== pasted && onPasteSanitized) {
-      e.preventDefault();
-      onPasteSanitized(sanitized);
-    }
-    // 通常はそのまま貼り付け
-  };
-
-  // エラーメッセージ生成
-  const errorMsg = hasDanger
-    ? "危険なタグ（script, iframe等）が含まれています。安全のため除去されます。"
-    : !isValid
-    ? "HTML構文に誤りがあります（タグ閉じ忘れ等）。"
-    : "";
+const InputArea: React.FC<InputAreaProps> = ({
+  value,
+  onChange,
+  onPasteSanitized,
+}) => {
+  // カスタムフックでロジック・状態を取得
+  const { textareaRef, handleClear, handlePaste, errorMsg } = useInputAreaState(
+    value,
+    onChange,
+    onPasteSanitized
+  );
 
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       {/* ラベル・説明・エラー */}
-      {/* ラベル・説明文はInputPane側で表示するため削除 */}
       <InputErrorMessage errorMsg={errorMsg} />
 
       {/* 入力欄＋クリアボタン */}

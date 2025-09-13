@@ -1,13 +1,14 @@
-// 入力欄のクリアボタン専用コンポーネント
-// visible: 表示するかどうか
-// onClick: クリア処理
-
-interface ClearButtonProps {
+/**
+ * 入力欄のクリアボタン専用コンポーネント
+ * @param visible ボタンを表示するかどうか
+ * @param onClick クリア処理コールバック
+ */
+type ClearButtonProps = {
   visible: boolean;
   onClick: () => void;
-}
+};
 
-const ClearButton = ({ visible, onClick }: ClearButtonProps) => {
+const ClearButton: React.FC<ClearButtonProps> = ({ visible, onClick }) => {
   if (!visible) return null;
   return (
     <button

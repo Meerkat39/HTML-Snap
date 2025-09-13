@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react";
-import PreviewPane from "./PreviewPane";
+import PreviewPane from "../components/PreviewPane";
 
 describe("PreviewPane エラー系結合テスト", () => {
   beforeEach(() => {

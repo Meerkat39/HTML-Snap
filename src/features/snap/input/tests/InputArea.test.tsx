@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
-import InputArea from "./InputArea";
+import InputArea from "../components/InputArea";
 
 // InputAreaの単体テスト
 // - 入力値反映

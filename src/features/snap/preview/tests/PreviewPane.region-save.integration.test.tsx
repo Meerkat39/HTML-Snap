@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PreviewPane from "./PreviewPane";
+import PreviewPane from "../components/PreviewPane";
 
 beforeEach(() => {
   global.fetch = jest.fn().mockResolvedValue({

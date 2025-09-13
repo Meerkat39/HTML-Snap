@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SliderWidthControl from "./SliderWidthControl";
+import SliderWidthControl from "../components/SliderWidthControl";
 
 describe("SliderWidthControl", () => {
   it("初期値が正しく表示される", () => {

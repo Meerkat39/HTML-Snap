@@ -1,6 +1,6 @@
 // ClearButtonコンポーネントの単体テスト
 import { fireEvent, render, screen } from "@testing-library/react";
-import ClearButton from "./ClearButton";
+import ClearButton from "../components/ClearButton";
 
 describe("ClearButton", () => {
   it("クリアボタンが表示され、クリックでonClickが呼ばれる", () => {

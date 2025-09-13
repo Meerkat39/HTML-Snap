@@ -1,6 +1,6 @@
 // ActionButtonsコンポーネントの単体テスト
 import { fireEvent, render, screen } from "@testing-library/react";
-import ActionButtons from "./ActionButtons";
+import ActionButtons from "../components/ActionButtons";
 
 describe("ActionButtons", () => {
   it("画像コピーボタンが表示され、クリックでonImageCopyが呼ばれる", () => {

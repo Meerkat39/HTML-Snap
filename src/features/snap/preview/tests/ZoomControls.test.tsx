@@ -2,7 +2,7 @@
 // ズームボタンのクリックで倍率が変化し、リセット・表示も正しく動作するかを検証
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import ZoomControls from "./ZoomControls";
+import ZoomControls from "../components/ZoomControls";
 
 // テスト用ラッパー（onZoomChangeで倍率変更を受け取る）
 const Wrapper = () => <ZoomControls onZoomChange={() => {}} />;

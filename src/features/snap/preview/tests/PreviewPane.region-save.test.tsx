@@ -1,6 +1,6 @@
 // 領域指定保存（選択領域のみ画像コピー）機能のテスト
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PreviewPane from "./PreviewPane";
+import PreviewPane from "../components/PreviewPane";
 
 // fetchとClipboard APIのモック
 const fetchMock = jest.fn();

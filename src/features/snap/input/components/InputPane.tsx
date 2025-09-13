@@ -1,20 +1,17 @@
-// 入力欄ペイン（InputAreaをラップ）
-import InputArea from "./InputArea";
-
-// props: 入力値・onChange・ペースト時サニタイズ用コールバック
 /**
- * InputPane: 入力欄ペイン
+ * 入力欄ペイン（InputAreaをラップ）
  * @param value 入力値
  * @param onChange 入力イベント
  * @param onPasteSanitized サニタイズ済みHTMLペースト時コールバック
  */
-type InputPaneProps = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onPasteSanitized?: (sanitized: string) => void;
-};
+import { InputPaneProps } from "../types/InputPaneProps";
+import InputArea from "./InputArea";
 
-const InputPane = ({ value, onChange, onPasteSanitized }: InputPaneProps) => {
+const InputPane: React.FC<InputPaneProps> = ({
+  value,
+  onChange,
+  onPasteSanitized,
+}) => {
   return (
     <section className="flex-1 border-none flex flex-col">
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700 min-h-[120px] flex flex-col justify-center">

@@ -1,6 +1,6 @@
 // InputErrorMessageコンポーネントの単体テスト
 import { render, screen } from "@testing-library/react";
-import InputErrorMessage from "./InputErrorMessage";
+import InputErrorMessage from "../components/InputErrorMessage";
 
 describe("InputErrorMessage", () => {
   it("エラーメッセージが表示される", () => {

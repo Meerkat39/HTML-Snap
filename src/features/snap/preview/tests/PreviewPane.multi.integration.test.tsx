@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react";
-import PreviewPane from "./PreviewPane";
+import PreviewPane from "../components/PreviewPane";
 
 describe("PreviewPane 複合操作・連続通知 結合テスト", () => {
   beforeEach(() => {

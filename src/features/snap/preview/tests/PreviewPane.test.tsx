@@ -5,7 +5,7 @@ jest.mock("html2canvas-pro", () => async () => ({
 }));
 // PreviewPaneの画像コピー機能テスト
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PreviewPane from "./PreviewPane";
+import PreviewPane from "../components/PreviewPane";
 
 // fetchモック
 const fetchMock = jest.fn();
